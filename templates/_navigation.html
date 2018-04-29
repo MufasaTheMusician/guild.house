@@ -1,6 +1,6 @@
 {% load static from staticfiles %}
 <!-- Navigation -->
-<nav class="navbar navbar-custom navbar-fixed-top" role="navigation" style="background: rgba(255,0,0,0.8)">
+<nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-main-collapse">
@@ -14,7 +14,6 @@
     <div class="navbar-collapse navbar-center navbar-main-collapse collapse" aria-expanded="false" style="height: 1px;">
 
       <ul class="nav navbar-nav">
-
         <li class="active">
           <a class="home-link" href="{% url "site:homepage_detail" %}">
             <img src="{% static "sheild-.png" %}" height=24>
@@ -50,5 +49,4 @@
     <!-- /.navbar-collapse -->
   </div>
   <!-- /.container -->
-<h4 style="display: block; text-align: center;">DEV/TESTING ... NOT REAL: MAY BE BUGGY</h4>
 </nav>

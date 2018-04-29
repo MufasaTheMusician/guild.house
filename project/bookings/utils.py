@@ -33,6 +33,12 @@ def import_revel_bookings(scrape):
         }
         return mapping[data]
 
+    def create_note(data):
+        if not data == '\r':
+            return data
+        else:
+            return ''
+
     # Confident that they'll do an update one day that will break this.
     # -> Happened Aug 2017
 
@@ -85,7 +91,7 @@ def import_revel_bookings(scrape):
         kwargs = {
             'created_at': make_aware(create_date_from_string(data[0])),
             'status': map_status(data[3]),
-            'notes': data[8],
+            'notes': create_note(data[8]),
             'legacy_code': create_legacy_code(data),
             'duration': DEFAULT_BOOKING_DURATION,
             'email': UNKNOWN_EMAIL,

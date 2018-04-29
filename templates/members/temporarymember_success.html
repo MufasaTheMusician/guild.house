@@ -9,7 +9,7 @@
 Your membership application has been submitted.
 
 You can pay online here:<br>
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="EH6FCUWKGHCSY">
 <table>
@@ -29,6 +29,14 @@ You can pay online here:<br>
 You will be notified when your membership is approved.
 
 
-
+<br><br>
+<p>
+<a href="{% url 'members:member_form' %}"
+<button type="submit" class="hidden-print btn btn-default btn-lg">
+          <i class="fa fa-plus-circle fa-fw"></i>
+          <span class="network-name">New Form</span>
+</button>
+</a>
+</p>
 
 {% endblock %}

@@ -94,6 +94,17 @@ class Member(models.Model):
     def get_absolute_url(self):
         return ('members:member_detail', (), {'number': self.number})
 
+    def get_emails(self):
+        return ", ".join([email.email for email in self.emails.all()])
+
+    def get_phones(self):
+        return ", ".join([phone.phone for phone in self.phones.all()])
+
+    def get_memberships(self):
+        return ", ".join(
+            ["{}".format(member.valid_from)
+             for member in self.membership_set.all()])
+
     def save(self, *args, **kwargs):
 
         if not self.key:

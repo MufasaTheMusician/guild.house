@@ -21,6 +21,8 @@ class PaymentInline(admin.TabularInline):
 class MemberAdmin(admin.ModelAdmin):
 
     model = Member
+    list_display = ['number', 'ref_name', 'sort_name', 'get_emails',
+                    'get_phones', 'get_memberships']
     inlines = [
         MembershipInline,
         PaymentInline

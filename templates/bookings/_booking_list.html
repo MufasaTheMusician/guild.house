@@ -1,31 +1,66 @@
+{% ifchanged  obj.reserved_time|time:"H:i" %}
+<tr>
+  <td colspan=7>
+    <b>&nbsp;</b>
+  </td>
+</tr>
+{% endifchanged %}
+  
 <tr {% if obj.status == "No Show" %}style="color: #666; text-decoration: line-through; "{% endif %}>
   <td style="white-space:nowrap">
-    {{ obj.reserved_time|time:"H:i" }} </td>
+    {{ obj.reserved_time|time:"H:i" }}
+  </td>
 
   <td style="white-space:nowrap">{{ obj.service }}</td>
   <td style="white-space:nowrap">{{ obj.party_size }} pax</td>
   <td>
+<<<<<<< HEAD
     {{ obj.name }}
+=======
+    <b>{{ obj.name }}</b>
+    <small>
+>>>>>>> upstream/master
     {% if obj.phone != "0000000000" %}{{ obj.phone }}{% endif %}
     {% if obj.phone and obj.email and not obj.email == "unknown@unknown.email" %}, {% endif %}
     {% if not obj.email == "unknown@unknown.email" %}{{ obj.email }}{% endif %}
+    </small>
+    {% if obj.notes %}-- ({{ obj.notes }}){% endif %}
   </td>
+<<<<<<< HEAD
   <td style="white-space:nowrap">
     <div class="hidden-print"><a href="{% url "bookings:booking_update" code=obj.code %}" style="white-space:nowrap"><em>{{obj.status}}</em></a></div>
+=======
+  <td style="white-space:nowrap"  class="hidden-print">
+    <em>{{obj.status}}</em>
+>>>>>>> upstream/master
   </td>
   <td>
-    {{ obj.notes }}
+    
   </td>
   <td>
+<<<<<<< HEAD
   <div class="hidden-print">   
+=======
+    <span class="hidden-print">
+>>>>>>> upstream/master
     <a target="_blank" href="{% url "bookings:booking_run" obj.code %}"
        style="white-space:nowrap">
       <small>(run sheet)</small></a> | 
     <a target="_blank" href="{% url "admin:bookings_booking_change" obj.pk %}"
        style="white-space:nowrap">
+<<<<<<< HEAD
       <small>(edit)</small>
     </a> 
   </div>
   <small style="font-family: monospace; font-size: 0.7em; color: #777;">{{ obj.created_at|date:"d/m/Y" }}</small>
+=======
+      <small>(edit)</small></a> |
+    <a href="{% url "bookings:booking_update" code=obj.code %}"
+       style="white-space:nowrap">
+      <small>(update)</small></a>   
+    <small style="font-family: monospace; font-size: 0.7em; color: #777;">{{ obj.created_at|date:"d/m/Y" }}</small>
+    </span>
+>>>>>>> upstream/master
   </td>
 </tr>
+
