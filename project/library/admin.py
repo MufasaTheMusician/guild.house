@@ -35,9 +35,11 @@ class GameAdmin(admin.ModelAdmin):
 
     fieldsets = [
         (None, {'fields': ['name', 'categories', 'expansion_for',
-                           'publisher', 'boardgamegeek_link',
+                           'publisher', 'boardgamegeek_id', 'boardgamegeek_rank',
+                           'year_published',
                            ('minimum_players', 'maximum_players'),
-                           ('minimum_playtime', 'maximum_playtime')]}),
+                           ('minimum_playtime', 'maximum_playtime'),
+                           ]}),
         ('Content', {'fields': ['title', 'heading', 'featured_content',
                                 'content', 'meta_description']}),
         ('Publishing', {'fields': ['is_enabled', 'is_featured', 'site', 'slug',

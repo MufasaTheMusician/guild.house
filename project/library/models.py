@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import, unicode_literals
-from . import querysets
+import requests
 from django.contrib.sites.models import Site
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from project import utils
 from taggit.managers import TaggableManager
+
+from . import querysets
 
 
 def get_current_site():
@@ -14,6 +17,9 @@ def get_current_site():
         return Site.objects.get_current().pk
     except Site.DoesNotExist:
         pass
+
+
+BGG_JSON_URL = 'https://bgg-json.azurewebsites.net/thing/{bgg_id}'
 
 
 @python_2_unicode_compatible
@@ -82,9 +88,17 @@ class Game(models.Model):
         'self', related_name='expansions', related_query_name='expansion',
         blank=True, null=True, on_delete=models.PROTECT)
 
+    featured_image = models.ImageField(max_length=1024,
+                                       upload_to='games_featured',
+                                       blank=True, default='')
+
     publisher = models.CharField(max_length=200, blank=True, default='')
 
-    boardgamegeek_link = models.URLField(blank=True, null=True)
+    boardgamegeek_id = models.PositiveIntegerField(blank=True, null=True)
+
+    boardgamegeek_rank = models.PositiveIntegerField(blank=True, null=True)
+
+    complexity = models.FloatField(blank=True, null=True)
 
     minimum_players = models.PositiveIntegerField(blank=True, null=True)
 
@@ -95,6 +109,8 @@ class Game(models.Model):
 
     maximum_playtime = models.PositiveIntegerField(
         blank=True, null=True, help_text='Duration in minutes')
+
+    year_published = models.PositiveIntegerField(blank=True, null=True)
 
     title = models.CharField(max_length=200, blank=True, default='')
 
@@ -149,3 +165,62 @@ class Game(models.Model):
             queryset = self.__class__.objects.filter(site=self.site)
             self.slug = utils.generate_unique_slug(self.name, queryset)
         return super(Game, self).save(*args, **kwargs)
+
+    def autopopulate_bgg_complexity(self):
+        bgg_get = requests.get('https://boardgamegeek.com/boardgame/{}'.format(
+            self.boardgamegeek_id))
+        location_key = 'boardgameweight":{"averageweight":'
+        bgg_content = str(bgg_get.content)
+        weight_location = bgg_content.find(location_key)
+        weight_location_start = weight_location+len(location_key)
+        weight_location_end = weight_location_start + \
+            bgg_content[weight_location_start:].find(',')
+        self.complexity = bgg_content[
+            weight_location_start:weight_location_end]
+        self.save()
+
+    def autopopulate_bgg_json(self, bgg_id=None, update_name=True):
+        """ This method will create a `Game` object with details provided from
+        boardgamegeek, if `self.boardgamegeek_id` """
+
+        if not self.boardgamegeek_id:
+            raise ValidationError("No boardgamegeek_id provided. Use method `Game.create_from_bgg_id(bgg_id)`.")  # noqa
+        else:
+            # See official API here:
+            # https://boardgamegeek.com/wiki/page/BGG_XML_API2
+            # Note: not using this though. Using a different variant.
+            # Using this wrapper rather than the official because JSON
+            # is simpler.
+            # https://bgg-json.azurewebsites.net/
+
+            this_game = requests.get(
+                BGG_JSON_URL.format(bgg_id=self.boardgamegeek_id))
+
+            if not this_game.status_code == 200:
+                raise ValidationError("boardgamegeek_id not working")
+
+            # Optional to update name, as we may want to manually set our
+            # own name and don't want to fix every time.
+            if update_name:
+                self.name = this_game.json()['name']
+
+            self.title = this_game.json()['name']
+            self.maximum_players = this_game.json()['maxPlayers']
+            self.minimum_players = this_game.json()['minPlayers']
+            self.minimum_playtime = this_game.json()['playingTime']
+            self.minimum_playtime = this_game.json()['playingTime']
+            self.year_published = this_game.json()['yearPublished']
+            self.boardgamegeek_rank = this_game.json()['rank']
+
+            self.content = this_game.json()['description']
+
+            self.save()
+
+    @classmethod
+    def create_from_bgg_id(cls, bgg_id):
+        "This method will create a `Game` object if provided with a bgg_id."
+        new_game = cls()
+        new_game.boardgamegeek_id = bgg_id
+        new_game.autopopulate_bgg_json()
+        new_game.autopopulate_bgg_complexity()
+        return new_game

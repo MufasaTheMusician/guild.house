@@ -18,6 +18,12 @@ class GameListView(generic.ListView):
 
     model = Game
 
+
+class GameListViewByCategory(generic.ListView):
+
+    model = Game
+    template_name = "library/game_list_by_category.html"
+
     def get_category(self):
         if not hasattr(self, '_category'):
             self._category = get_object_or_404(

@@ -1,20 +1,10 @@
 {% extends "library/base.html" %}
 
 
-{% block title %}{{ category.title|default:category.name }} - {{ block.super }}{% endblock %}
-
-
-{% block meta %}
-  {{ block.super }}
-  {% if category.meta_description %}<meta name="description" content="{{ category.meta_description }}" />{% endif %}
-{% endblock %}
+{% block title %}Games List - {{ block.super }}{% endblock %}
 
 
 {% block content %}
-
-  <h1>{{ category.heading|default:category.name }}</h1>
-  {% if category.featured_content %}<div>{{ category.featured_content }}</div>{% endif %}
-  {% if category.content %}<div>{{ category.content|safe }}</div>{% endif %}
 
   {% for game in game_list %}
     {% if forloop.first %}<h2>Games</h2><ul>{% endif %}

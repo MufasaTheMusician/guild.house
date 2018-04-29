@@ -6,7 +6,7 @@ from django.conf.urls import include, url
 
 urls = [
 
-    url(r'^$', views.CategoryListView.as_view(), name='category_list'),
+    url(r'^$', views.GameListView.as_view(), name='category_list'),
 
     url(r'^(?P<slug>[\w-]+)/$', views.GameListView.as_view(),
         name='category_detail'),

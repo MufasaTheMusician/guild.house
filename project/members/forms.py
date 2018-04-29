@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 
-from project.fields import AUPhoneNumberField
+from localflavor.au.forms import AUPhoneNumberField
 from project.rolodex.models import Email, Phone
 
 from . import settings
