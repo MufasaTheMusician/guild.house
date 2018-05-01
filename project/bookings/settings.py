@@ -91,18 +91,18 @@ BOOKING_TIMES_CHOICES = generate_times()
 
 # An hour is manually added on in views.TimeMixin for good luck.
 DEFAULT_BOOKING_DURATION = getattr(settings, 'BOOKINGS_DEFAULT_BOOKING_DURATION',
-                                   '03:00:00')
+                                   '3:00:00')
 
 DURATION_SELECTION = [
     ('00:30:00', '30 minutes'),
     ('00:45:00', '45 minutes'),
-    ('01:00:00', '1 hour'),
-    ('01:30:00', '1 and a half hours'),
-    ('02:00:00', '2 hours'),
-    ('02:30:00', '2 and a half hours'),
-    ('03:00:00', '3 hours'),
-    ('04:00:00', '4 hours'),
-    ('06:00:00', 'more than 4 hours')
+    ('1:00:00', '1 hour'),
+    ('1:30:00', '1 and a half hours'),
+    ('2:00:00', '2 hours'),
+    ('2:30:00', '2 and a half hours'),
+    ('3:00:00', '3 hours'),
+    ('4:00:00', '4 hours'),
+    ('6:00:00', 'more than 4 hours')
 ]
 
 HEAT = {
