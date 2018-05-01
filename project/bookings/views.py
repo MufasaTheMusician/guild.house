@@ -186,9 +186,9 @@ Link to day: http://guild.house/bookings/{url_day}
                    url=obj.get_absolute_url(),
                    method=form.cleaned_data.get('booking_method'),
                    day=form.cleaned_data.get('reserved_date').strftime('%a'),
-                   time=form.cleaned_data.get('reserved_time'),
+                   time=str(form.cleaned_data.get('reserved_time')),
                    date=form.cleaned_data.get(
-                       'reserved_date').strftime('%-d-%b-%Y'),
+                       'reserved_date').strftime('%d-%b-%Y'),
                    url_day=form.cleaned_data.get(
                        'reserved_date').strftime('%Y/%m/%d/'),
                    pax=form.cleaned_data.get('party_size'),
@@ -196,7 +196,7 @@ Link to day: http://guild.house/bookings/{url_day}
                    )
         subject = "[{method}] {name} {pax}pax {date} ".format(
             method=form.cleaned_data.get('booking_method'),
-            date=form.cleaned_data.get('reserved_date').strftime('%a %-d-%b'),
+            date=form.cleaned_data.get('reserved_date').strftime('%a %d-%b'),
             pax=form.cleaned_data.get('party_size'),
             name=form.cleaned_data.get('name')
         )
@@ -243,15 +243,15 @@ Open 7 days, 12pm til late
                    url=obj.get_absolute_url(),
                    method=form.cleaned_data.get('booking_method'),
                    day=form.cleaned_data.get('reserved_date').strftime('%a'),
-                   time=form.cleaned_data.get('reserved_time'),
+                   time=str(form.cleaned_data.get('reserved_time')),
                    date=form.cleaned_data.get(
-                       'reserved_date').strftime('%-d-%b-%Y'),
+                       'reserved_date').strftime('%d-%b-%Y'),
                    pax=form.cleaned_data.get('party_size'),
                    name=form.cleaned_data.get('name'),
                    )
         subject = "[{method}] {name} {pax}pax {date} ".format(
             method=form.cleaned_data.get('booking_method'),
-            date=form.cleaned_data.get('reserved_date').strftime('%a %-d-%b'),
+            date=form.cleaned_data.get('reserved_date').strftime('%a %d-%b'),
             pax=form.cleaned_data.get('party_size'),
             name=form.cleaned_data.get('name')
         )
